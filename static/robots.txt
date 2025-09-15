@@ -1,3 +1,21 @@
-# allow crawling everything by default
+# Robots.txt for 30/30 Travel Gallery
+# Allow all web crawlers to index the site
+
 User-agent: *
-Disallow:
+Allow: /
+
+# Block crawling of API endpoints and admin areas
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_app/
+Disallow: /assets/raw/
+
+# Allow crawling of important pages
+Allow: /explore
+Allow: /assets/
+
+# Sitemap location
+Sitemap: https://30u30.vercel.app/sitemap.xml
+
+# Crawl delay to be respectful to server resources
+Crawl-delay: 1

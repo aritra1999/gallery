@@ -6,6 +6,4 @@
 	let { assets }: { assets: Asset[] } = $props();
 </script>
 
-<div>
-	<!-- <Globe {assets} /> -->
-</div>
+<div</div>

@@ -39,7 +39,7 @@
 		}
 
 		document.addEventListener('keydown', handleGlobalKeydown);
-		
+
 		return () => {
 			document.removeEventListener('keydown', handleGlobalKeydown);
 		};
@@ -60,7 +60,6 @@
 </script>
 
 {#if isOpen && asset}
-	<!-- Modal backdrop -->
 	<div
 		bind:this={modalElement}
 		class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
@@ -69,5 +68,4 @@
 		aria-modal="true"
 		aria-labelledby="modal-title"
 	>
-		<!-- Modal content -->
 		<div class="relative max

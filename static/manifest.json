@@ -1,0 +1,38 @@
+{
+  "name": "30/30 - Travel Gallery",
+  "short_name": "30/30",
+  "description": "Aritra's personal travel gallery documenting the journey to visit 30 countries before turning 30",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/src/lib/assets/favicon.svg",
+      "sizes": "32x32",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/src/lib/assets/favicon.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/src/lib/assets/favicon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": [
+    "travel",
+    "photography",
+    "lifestyle"
+  ],
+  "lang": "en",
+  "dir": "ltr"
+}
