@@ -2,8 +2,8 @@
 	import { page } from '$app/stores';
 	import { Button } from '$lib/components/ui/button/index.js';
 
-	$: status = $page.status;
-	$: error = $page.error;
+	let status = $state($page.status);
+	let error = $state($page.error);
 </script>
 
 <svelte:head>
