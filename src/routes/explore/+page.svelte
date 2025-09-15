@@ -32,7 +32,7 @@
 	onMount(() => {
 		setTimeout(() => {
 			showLoadingModal = false;
-		}, 3000);
+		}, 300);
 	});
 </script>
 
@@ -75,7 +75,7 @@
 							</video>
 						{:else}
 							<img
-								src={asset.url}
+								src={`${asset.url}?w=300`}
 								alt={asset.url}
 								class="z-20 w-full rounded-lg object-cover transition-transform duration-300 group-hover:scale-105"
 							/>
