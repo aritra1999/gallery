@@ -1,4 +1,4 @@
-export const PAGE_SIZE = 50;
+export const PAGE_SIZE = 20;
 
 export const COUNTRIES = [
 	{ name: 'Afghanistan', lat: 33.9391, lng: 67.71 },

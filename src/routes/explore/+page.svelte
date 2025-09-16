@@ -2,6 +2,7 @@
 	import type { Asset } from '@/types.js';
 	import { Button } from '$lib/components/ui/button';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
+	import Masonry from '$lib/components/ui/masonry/masonry.svelte';
 	import Background from '$lib/components/ui/landing/background.svelte';
 	import { onMount } from 'svelte';
 
@@ -13,6 +14,18 @@
 	let selectedAsset = $state<Asset | null>(null);
 	let noMoreAssets = $state(false);
 	let showLoadingModal = $state(true);
+
+	let [minColWidth, maxColWidth, gap] = [200, 800, 10];
+	let width = $state(0),
+		height = $state(0);
+
+	// Custom column calculation based on breakpoints
+	const calcResponsiveCols = (masonryWidth: number) => {
+		if (masonryWidth >= 1280) return 5;
+		if (masonryWidth >= 1024) return 4;
+		if (masonryWidth >= 768) return 3;
+		return 2; // sm screens (mobile)
+	};
 
 	async function loadNextPage() {
 		loading = true;
@@ -55,13 +68,23 @@
 {/if}
 <div>
 	{#if assets && assets.length > 0}
-		<div class="columns-2 gap-2 md:columns-3 lg:columns-4 xl:columns-5">
-			{#each assets as asset (asset._id)}
+		<Masonry
+			items={assets}
+			{minColWidth}
+			{maxColWidth}
+			{gap}
+			calcCols={calcResponsiveCols}
+			getId={(asset) => asset._id}
+			bind:masonryWidth={width}
+			bind:masonryHeight={height}
+		>
+			{#snippet children({ item: asset })}
 				<button
 					onclick={() => {
 						open = true;
 						selectedAsset = asset;
 					}}
+					class="block w-full"
 				>
 					<div class="group rounded-6xl relative z-20 mb-1 cursor-pointer overflow-hidden">
 						{#if asset.mimeType.startsWith('video/')}
@@ -82,7 +105,7 @@
 						{/if}
 						{#if asset.tags && asset.tags.length > 0}
 							<div class="absolute right-1.5 bottom-2 opacity-0 group-hover:opacity-100">
-								{#each asset.tags as tag (`${tag}-${asset.id}`)}
+								{#each asset.tags as tag (`${tag}-${asset._id}`)}
 									<span class="ml-1.5 bg-background px-3 py-1.5 text-xs font-medium shadow-sm">
 										{tag}
 									</span>
@@ -91,8 +114,8 @@
 						{/if}
 					</div>
 				</button>
-			{/each}
-		</div>
+			{/snippet}
+		</Masonry>
 		{#if !noMoreAssets}
 			<div class="z-20 mt-10 mb-96 flex justify-center">
 				<Button class="z-20" variant="outline" onclick={loadNextPage} disabled={loading}>
