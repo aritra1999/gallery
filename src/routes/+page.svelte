@@ -89,7 +89,6 @@
 		<h1 class="header mb-4 text-3xl font-bold sm:text-4xl">
 			{Object.keys(data.summery).length} / 30
 		</h1>
-		<p class="font-base text-xs sm:text-base">Countries Visited</p>
 	</div>
 </div>
 
@@ -100,7 +99,7 @@
 			<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
 				{#each places as place (place)}
 					<a
-						href="/explore?t={place},{country}"
+						href="/explore?t={encodeURIComponent(`${place},${country}`)}"
 						class="-mr-px -mb-px block border border-foreground bg-background p-4 transition-colors hover:bg-foreground hover:text-background"
 					>
 						{place}
