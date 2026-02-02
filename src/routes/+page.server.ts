@@ -1,4 +1,4 @@
-import type { PageServerLoad } from '../$types';
+import type { PageServerLoad } from './$types';
 import { error } from '@sveltejs/kit';
 import { summerizeTags } from '@/sanity/utils';
 import { fetchTags } from '@/sanity/client';
