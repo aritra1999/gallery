@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Map, MapMarker, MarkerContent } from '$lib/components/ui/map';
-	import Modal from '$lib/components/ui/modal/modal.svelte';
+	import { ChevronLeft, ChevronRight } from '@lucide/svelte';
 	import type { Asset } from '$lib/types';
 
 	type AssetWithLocation = Asset & { lat: number; lng: number };
@@ -67,7 +67,31 @@
 		selectedGroup = null;
 		currentIndex = 0;
 	}
+
+	function goToPrevious() {
+		if (selectedGroup && currentIndex > 0) {
+			currentIndex--;
+		}
+	}
+
+	function goToNext() {
+		if (selectedGroup && currentIndex < selectedGroup.assets.length - 1) {
+			currentIndex++;
+		}
+	}
+
+	function handleKeydown(event: KeyboardEvent) {
+		if (!showModal || !selectedGroup) return;
+
+		if (event.key === 'ArrowLeft') {
+			goToPrevious();
+		} else if (event.key === 'ArrowRight') {
+			goToNext();
+		}
+	}
 </script>
+
+<svelte:window onkeydown={handleKeydown} />
 
 <svelte:head>
 	<title>World Map - 30/30 Travel Gallery</title>
@@ -136,16 +160,85 @@
 	</Map>
 </div>
 
-<!-- Full screen modal -->
-<Modal
-	isOpen={showModal}
-	onClose={closeModal}
-	asset={selectedAsset
-		? {
-				id: selectedAsset._id,
-				url: selectedAsset.url,
-				mimeType: selectedAsset.mimeType,
-				tags: selectedAsset.tags
-			}
-		: null}
-/>
+<!-- Gallery modal with navigation -->
+{#if showModal && currentAsset}
+	<div
+		class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+		onclick={(e) => e.target === e.currentTarget && closeModal()}
+		onkeydown={(e) => e.key === 'Escape' && closeModal()}
+		role="dialog"
+		aria-modal="true"
+		tabindex="-1"
+	>
+		<div class="relative max-h-[90vh] max-w-[90vw]">
+			<!-- Close button -->
+			<button
+				class="absolute -right-2 -top-2 z-10 rounded-full bg-white p-1.5 shadow-lg transition-colors hover:bg-gray-100"
+				onclick={closeModal}
+				aria-label="Close modal"
+			>
+				<svg class="h-5 w-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+				</svg>
+			</button>
+
+			<!-- Navigation arrows for multiple assets -->
+			{#if selectedGroup && selectedGroup.assets.length > 1}
+				<!-- Previous button -->
+				<button
+					class="absolute left-0 top-1/2 z-10 -translate-x-12 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-lg transition-all hover:bg-white disabled:opacity-30 disabled:cursor-not-allowed"
+					onclick={goToPrevious}
+					disabled={currentIndex === 0}
+					aria-label="Previous image"
+				>
+					<ChevronLeft class="h-6 w-6 text-gray-700" />
+				</button>
+
+				<!-- Next button -->
+				<button
+					class="absolute right-0 top-1/2 z-10 translate-x-12 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-lg transition-all hover:bg-white disabled:opacity-30 disabled:cursor-not-allowed"
+					onclick={goToNext}
+					disabled={currentIndex === selectedGroup.assets.length - 1}
+					aria-label="Next image"
+				>
+					<ChevronRight class="h-6 w-6 text-gray-700" />
+				</button>
+
+				<!-- Counter -->
+				<div class="absolute -bottom-8 left-1/2 -translate-x-1/2 rounded-full bg-black/60 px-3 py-1 text-sm text-white">
+					{currentIndex + 1} / {selectedGroup.assets.length}
+				</div>
+			{/if}
+
+			<!-- Media content -->
+			{#if currentAsset.mimeType.startsWith('video')}
+				<video
+					src={currentAsset.url}
+					class="max-h-[85vh] max-w-[85vw] rounded-lg object-contain"
+					controls
+					autoplay
+					playsinline
+				>
+					<track kind="captions" src="" label="No captions available" />
+				</video>
+			{:else}
+				<img
+					src="{currentAsset.url}?w=1920&h=1080&fit=max"
+					alt=""
+					class="max-h-[85vh] max-w-[85vw] rounded-lg object-contain"
+				/>
+			{/if}
+
+			<!-- Tags -->
+			{#if currentAsset.tags && currentAsset.tags.length > 0}
+				<div class="absolute bottom-2 left-2 flex flex-wrap gap-1">
+					{#each currentAsset.tags as tag}
+						<span class="rounded bg-black/50 px-2 py-0.5 text-xs text-white backdrop-blur-sm">
+							{tag}
+						</span>
+					{/each}
+				</div>
+			{/if}
+		</div>
+	</div>
+{/if}
