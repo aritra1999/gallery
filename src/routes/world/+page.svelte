@@ -50,6 +50,7 @@
 	let selectedGroup = $state<LocationGroup | null>(null);
 	let currentIndex = $state(0);
 	let showModal = $state(false);
+	let isMediaLoaded = $state(false);
 
 	// Derived current asset from selected group and index
 	const currentAsset = $derived(
@@ -59,6 +60,7 @@
 	function handleMarkerClick(group: LocationGroup) {
 		selectedGroup = group;
 		currentIndex = 0;
+		isMediaLoaded = false;
 		showModal = true;
 	}
 
@@ -66,18 +68,25 @@
 		showModal = false;
 		selectedGroup = null;
 		currentIndex = 0;
+		isMediaLoaded = false;
 	}
 
 	function goToPrevious() {
 		if (selectedGroup && currentIndex > 0) {
+			isMediaLoaded = false;
 			currentIndex--;
 		}
 	}
 
 	function goToNext() {
 		if (selectedGroup && currentIndex < selectedGroup.assets.length - 1) {
+			isMediaLoaded = false;
 			currentIndex++;
 		}
+	}
+
+	function handleMediaLoad() {
+		isMediaLoaded = true;
 	}
 
 	function handleKeydown(event: KeyboardEvent) {
@@ -170,7 +179,14 @@
 		aria-modal="true"
 		tabindex="-1"
 	>
-		<div class="relative max-h-[90vh] max-w-[90vw]">
+		<!-- Loading spinner -->
+		{#if !isMediaLoaded}
+			<div class="absolute inset-0 flex items-center justify-center">
+				<div class="h-10 w-10 animate-spin rounded-full border-4 border-white/30 border-t-white"></div>
+			</div>
+		{/if}
+
+		<div class="relative max-h-[90vh] max-w-[90vw]" class:opacity-0={!isMediaLoaded}>
 			<!-- Close button -->
 			<button
 				class="absolute -right-2 -top-2 z-10 rounded-full bg-white p-1.5 shadow-lg transition-colors hover:bg-gray-100"
@@ -218,6 +234,7 @@
 					controls
 					autoplay
 					playsinline
+					onloadeddata={handleMediaLoad}
 				>
 					<track kind="captions" src="" label="No captions available" />
 				</video>
@@ -226,6 +243,7 @@
 					src="{currentAsset.url}?w=1920&h=1080&fit=max"
 					alt=""
 					class="max-h-[85vh] max-w-[85vw] rounded-lg object-contain"
+					onload={handleMediaLoad}
 				/>
 			{/if}
 
