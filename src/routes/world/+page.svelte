@@ -51,7 +51,7 @@
 								class="h-12 w-12 rounded object-cover md:h-16 md:w-16"
 								muted
 								playsinline
-								poster="{asset.url}?frame=1"
+								preload="metadata"
 							></video>
 						{:else}
 							<img
