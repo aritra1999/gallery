@@ -54,82 +54,84 @@
 	<meta name="description" content="Explore the media gallery" />
 </svelte:head>
 
-<div class="my-16">
+<div class="container mx-auto pt-10">
+	<div class="my-16">
 	<h1 class="header mb-8 text-4xl font-bold sm:text-5xl">
 		{data.tag}
-	</h1>
-</div>
-{#if showLoadingModal}
-	<div
-		class="fixed top-16 left-0 z-50 flex h-[calc(100vh-4rem)] w-screen items-center justify-center bg-background"
-	>
-		Loading assets...
+		</h1>
 	</div>
-{/if}
-<div>
-	{#if assets && assets.length > 0}
-		<Masonry
-			items={assets}
-			{minColWidth}
-			{maxColWidth}
-			{gap}
-			calcCols={calcResponsiveCols}
-			getId={(asset) => asset._id}
-			bind:masonryWidth={width}
-			bind:masonryHeight={height}
+	{#if showLoadingModal}
+		<div
+			class="fixed top-16 left-0 z-50 flex h-[calc(100vh-4rem)] w-screen items-center justify-center bg-background"
 		>
-			{#snippet children({ item: asset })}
-				<button
-					onclick={() => {
-						open = true;
-						selectedAsset = asset;
-					}}
-					class="block w-full"
-				>
-					<div class="group rounded-6xl relative z-20 mb-1 cursor-pointer overflow-hidden">
-						{#if asset.mimeType.startsWith('video/')}
-							<video
-								controls={false}
-								class="z-20 w-full rounded-lg object-cover transition-transform duration-300 group-hover:scale-105"
-							>
-								<source src={asset.url} type={asset.mimeType} />
-								<track kind="captions" src="" label="No captions available" />
-								Your browser does not support the video tag.
-							</video>
-						{:else}
-							<img
-								src={`${asset.url}?w=300`}
-								alt={asset.url}
-								class="z-20 w-full rounded-lg object-cover transition-transform duration-300 group-hover:scale-105"
-							/>
-						{/if}
-						{#if asset.tags && asset.tags.length > 0}
-							<div class="absolute right-1.5 bottom-2 opacity-0 group-hover:opacity-100">
-								{#each asset.tags as tag (`${tag}-${asset._id}`)}
-									<span class="ml-1.5 bg-background px-3 py-1.5 text-xs font-medium shadow-sm">
-										{tag}
-									</span>
-								{/each}
-							</div>
-						{/if}
-					</div>
-				</button>
-			{/snippet}
-		</Masonry>
-		{#if !noMoreAssets}
-			<div class="z-20 mt-10 mb-96 flex justify-center">
-				<Button class="z-20" variant="outline" onclick={loadNextPage} disabled={loading}>
-					{#if loading}
-						Loading...
-					{:else}
-						Load More
-					{/if}
-				</Button>
-			</div>
-		{/if}
-	{:else}
-		<p class="mt-20 text-center">No assets found.</p>
+			Loading assets...
+		</div>
 	{/if}
+	<div>
+		{#if assets && assets.length > 0}
+			<Masonry
+				items={assets}
+				{minColWidth}
+				{maxColWidth}
+				{gap}
+				calcCols={calcResponsiveCols}
+				getId={(asset) => asset._id}
+				bind:masonryWidth={width}
+				bind:masonryHeight={height}
+			>
+				{#snippet children({ item: asset })}
+					<button
+						onclick={() => {
+							open = true;
+							selectedAsset = asset;
+						}}
+						class="block w-full"
+					>
+						<div class="group rounded-6xl relative z-20 mb-1 cursor-pointer overflow-hidden">
+							{#if asset.mimeType.startsWith('video/')}
+								<video
+									controls={false}
+									class="z-20 w-full rounded-lg object-cover transition-transform duration-300 group-hover:scale-105"
+								>
+									<source src={asset.url} type={asset.mimeType} />
+									<track kind="captions" src="" label="No captions available" />
+									Your browser does not support the video tag.
+								</video>
+							{:else}
+								<img
+									src={`${asset.url}?w=300`}
+									alt={asset.url}
+									class="z-20 w-full rounded-lg object-cover transition-transform duration-300 group-hover:scale-105"
+								/>
+							{/if}
+							{#if asset.tags && asset.tags.length > 0}
+								<div class="absolute right-1.5 bottom-2 opacity-0 group-hover:opacity-100">
+									{#each asset.tags as tag (`${tag}-${asset._id}`)}
+										<span class="ml-1.5 bg-background px-3 py-1.5 text-xs font-medium shadow-sm">
+											{tag}
+										</span>
+									{/each}
+								</div>
+							{/if}
+						</div>
+					</button>
+				{/snippet}
+			</Masonry>
+			{#if !noMoreAssets}
+				<div class="z-20 mt-10 mb-96 flex justify-center">
+					<Button class="z-20" variant="outline" onclick={loadNextPage} disabled={loading}>
+						{#if loading}
+							Loading...
+						{:else}
+							Load More
+						{/if}
+					</Button>
+				</div>
+			{/if}
+		{:else}
+			<p class="mt-20 text-center">No assets found.</p>
+		{/if}
+	</div>
 </div>
 
 <Dialog.Root bind:open>
