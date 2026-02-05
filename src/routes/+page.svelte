@@ -1,7 +1,8 @@
 <script lang="ts">
 	import Background from '@/components/ui/landing/background.svelte';
+	import type { PageProps } from './$types';
 
-	let { data } = $props();
+	let { data }: PageProps = $props();
 </script>
 
 <svelte:head>
