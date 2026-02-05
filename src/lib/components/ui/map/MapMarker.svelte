@@ -29,6 +29,7 @@
 		rotation?: number;
 		pitchAlignment?: MarkerOptions["pitchAlignment"];
 		rotationAlignment?: MarkerOptions["rotationAlignment"];
+		zIndex?: number;
 	}
 
 	let {
@@ -47,6 +48,7 @@
 		rotation,
 		pitchAlignment,
 		rotationAlignment,
+		zIndex,
 	}: Props = $props();
 
 	const mapCtx = getContext<{
@@ -109,6 +111,14 @@
 			.addTo(map);
 
 		marker = markerInstance;
+
+		// Apply z-index to the marker's wrapper element
+		if (zIndex !== undefined) {
+			const markerEl = markerInstance.getElement();
+			if (markerEl) {
+				markerEl.style.zIndex = String(zIndex);
+			}
+		}
 
 		// Mouse event listeners on the container
 		if (onclick) container.addEventListener("click", onclick);
@@ -178,6 +188,16 @@
 	// Update draggable when prop changes
 	$effect(() => {
 		marker?.setDraggable(draggable);
+	});
+
+	// Update z-index when prop changes
+	$effect(() => {
+		if (marker && zIndex !== undefined) {
+			const markerEl = marker.getElement();
+			if (markerEl) {
+				markerEl.style.zIndex = String(zIndex);
+			}
+		}
 	});
 </script>
 
