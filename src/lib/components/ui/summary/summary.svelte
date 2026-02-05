@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type { Asset } from '$lib/types';
-	import { onMount } from 'svelte';
-	// import Globe from './globe.svelte';
 
 	let { assets }: { assets: Asset[] } = $props();
 </script>
 
-<div</div>
+<div class="p-4">
+	<p class="text-muted-foreground">Summary component - {assets.length} assets</p>
+</div>

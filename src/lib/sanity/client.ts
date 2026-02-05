@@ -29,7 +29,7 @@ export async function fetchTags(): Promise<string[]> {
 	return await client
 		.fetch(query)
 		.then((result) => {
-			return result.items.map((item: { name: string }) => item.name.current);
+			return result.items.map((item: { name: { current: string } }) => item.name.current);
 		})
 		.catch((error) => {
 			console.error('Error fetching tags:', error);
@@ -50,6 +50,35 @@ export async function fetchAssets(tag: string, page: number = 1): Promise<Asset[
         size,
         url
       } | order(_createdAt desc) [${(page - 1) * PAGE_SIZE}...${page * PAGE_SIZE}]
+    }`;
+
+	return await client
+		.fetch(query)
+		.then((result) => result.items.map((item: Asset) => ({ ...item, tags: item.tags ?? [] })))
+		.catch((error) => {
+			console.error('Error fetching media assets:', error);
+			throw error;
+		});
+}
+
+export async function fetchAllAssets(): Promise<Asset[]> {
+	const query = `{
+      "items": *[
+        _type in ["sanity.fileAsset","sanity.imageAsset"]
+        && !(_id in path("drafts.**"))
+        && defined(metadata.location.lat)
+        && defined(metadata.location.lng)
+      ] {
+        _id,
+        _createdAt,
+        _updatedAt,
+        mimeType,
+        "tags": opt.media.tags[]->name.current,
+        "lat": metadata.location.lat,
+        "lng": metadata.location.lng,
+        size,
+        url
+      } | order(_createdAt desc)
     }`;
 
 	return await client
