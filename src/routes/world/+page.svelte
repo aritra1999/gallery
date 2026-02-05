@@ -119,6 +119,7 @@
 				latitude={group.lat}
 				longitude={group.lng}
 				onclick={() => handleMarkerClick(group)}
+				zIndex={count > 1 ? 10 : 1}
 			>
 				<MarkerContent class="cursor-pointer transition-transform hover:scale-110">
 					<div class="relative">
