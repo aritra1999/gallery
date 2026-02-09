@@ -61,6 +61,7 @@
 		"bcryptjs": "^3.0.2",
 		"cobe": "^0.6.4",
 		"date-fns": "^4.1.0",
+		"estree-walker": "^3.0.3",
 		"jose": "^6.1.0",
 		"maplibre-gl": "^5.17.0",
 		"mode-watcher": "^1.1.0",
