@@ -1,18 +1,16 @@
-import type { PageServerLoad } from '../$types';
+import type { PageServerLoad } from './$types';
 import { error } from '@sveltejs/kit';
-import { summerizeTags } from '@/sanity/utils';
-import { fetchTags } from '@/sanity/client';
+import { fetchAllAssets } from '@/sanity/client';
 
 export const load: PageServerLoad = async () => {
 	try {
-		const tags = await fetchTags();
-		const summery = summerizeTags(tags);
+		const assets = await fetchAllAssets();
 
 		return {
-			summery
+			assets
 		};
 	} catch (err) {
-		console.error('Error loading media URLs:', err);
+		console.error('Error loading media assets:', err);
 		throw error(500, 'Failed to load media from Sanity');
 	}
 };
