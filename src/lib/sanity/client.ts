@@ -29,7 +29,7 @@ export async function fetchTags(): Promise<string[]> {
 	return await client
 		.fetch(query)
 		.then((result) => {
-			return result.items.map((item: { name: string }) => item.name.current);
+			return result.items.map((item: { name: { current: string } }) => item.name.current);
 		})
 		.catch((error) => {
 			console.error('Error fetching tags:', error);
