@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Map, MapMarker, MarkerContent } from '$lib/components/ui/map';
-	import { ChevronLeft, ChevronRight } from '@lucide/svelte';
+	import ChevronLeft from '@lucide/svelte/icons/chevron-left';
+	import ChevronRight from '@lucide/svelte/icons/chevron-right';
 	import type { Asset } from '$lib/types';
 
 	type AssetWithLocation = Asset & { lat: number; lng: number };

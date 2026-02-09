@@ -2,7 +2,9 @@
 	import '../app.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import { ModeWatcher } from 'mode-watcher';
-	import { SunIcon, MoonIcon, Info } from '@lucide/svelte';
+	import SunIcon from '@lucide/svelte/icons/sun';
+	import MoonIcon from '@lucide/svelte/icons/moon';
+	import Info from '@lucide/svelte/icons/info';
 	import { toggleMode } from 'mode-watcher';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
