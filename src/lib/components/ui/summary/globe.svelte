@@ -41,8 +41,6 @@
 			return { location: [country.lat, country.lng], size: assetMap[country.name] * 0.01 };
 		}).filter((marker) => marker.size > 0) as Marker[];
 
-		console.log(markers);
-
 		return markers;
 	};
 
