@@ -7,14 +7,14 @@
 	import Info from '@lucide/svelte/icons/info';
 	import { toggleMode } from 'mode-watcher';
 	import { Button } from '$lib/components/ui/button/index.js';
-	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import posthog from 'posthog-js';
 	import { browser } from '$app/environment';
 	import { beforeNavigate, afterNavigate } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import type { LayoutData } from './$types';
 
 	interface Props {
-		children: any;
+		children?: import('svelte').Snippet;
 		data: LayoutData;
 	}
 
@@ -51,7 +51,7 @@
 		<div class="flex h-full items-center justify-between pr-3 pl-2">
 			<div>
 				<a
-					href="/"
+					href={resolve("/")}
 					class="header flex h-16 items-center px-4 text-2xl font-bold"
 					aria-label="30/30 Travel Gallery - Home">30/30</a
 				>

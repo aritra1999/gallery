@@ -314,7 +314,7 @@
 			<!-- Tags -->
 			{#if currentAsset.tags && currentAsset.tags.length > 0}
 				<div class="absolute bottom-2 left-2 flex flex-wrap gap-1">
-					{#each currentAsset.tags as tag}
+					{#each currentAsset.tags as tag (tag)}
 						<span class="rounded bg-black/50 px-2 py-0.5 text-xs text-white backdrop-blur-sm">
 							{tag}
 						</span>

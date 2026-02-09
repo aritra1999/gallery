@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Background from '@/components/ui/landing/background.svelte';
+	import { resolve } from '$app/paths';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -39,7 +40,7 @@
 			<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
 				{#each places as place (place)}
 					<a
-						href="/explore?t={encodeURIComponent(`${place},${country}`)}"
+						href={resolve(`/explore?t=${encodeURIComponent(`${place},${country}`)}`)}
 						class="-mr-px -mb-px block border border-foreground bg-background p-4 transition-colors hover:bg-foreground hover:text-background"
 					>
 						{place}

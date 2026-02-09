@@ -21,6 +21,8 @@
 	let movedContent: Node[] = [];
 
 	// Move content to marker element when ready
+	// DOM manipulation is required for MapLibre marker integration
+	/* eslint-disable svelte/no-dom-manipulating */
 	$effect(() => {
 		const element = markerCtx.getElement();
 		const ready = markerCtx.isReady();
@@ -41,6 +43,7 @@
 			movedContent = [];
 		};
 	});
+	/* eslint-enable svelte/no-dom-manipulating */
 </script>
 
 <!-- Hidden wrapper that holds content until marker is ready -->
