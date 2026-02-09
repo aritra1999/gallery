@@ -17,8 +17,7 @@
 	// Filter assets with valid coordinates
 	const assetsWithLocation = $derived(
 		data.assets.filter(
-			(asset): asset is AssetWithLocation =>
-				asset.lat !== undefined && asset.lng !== undefined
+			(asset): asset is AssetWithLocation => asset.lat !== undefined && asset.lng !== undefined
 		)
 	);
 
@@ -54,9 +53,7 @@
 	let isMediaLoaded = $state(false);
 
 	// Derived current asset from selected group and index
-	const currentAsset = $derived(
-		selectedGroup ? selectedGroup.assets[currentIndex] : null
-	);
+	const currentAsset = $derived(selectedGroup ? selectedGroup.assets[currentIndex] : null);
 
 	function handleMarkerClick(group: LocationGroup) {
 		selectedGroup = group;
@@ -173,7 +170,7 @@
 	</script>
 </svelte:head>
 
-<div class="flex h-screen w-full flex-col ">
+<div class="flex h-screen w-full flex-col">
 	<Map center={[0, 20]} zoom={2}>
 		{#each groupedByLocation as group (group.key)}
 			{@const firstAsset = group.assets[0]}
@@ -189,11 +186,11 @@
 						<!-- Stacked cards effect for multiple assets -->
 						{#if count > 1}
 							<div
-								class="absolute left-1 top-1 h-12 w-12 rounded-md border-2 border-white bg-gray-200 shadow md:h-16 md:w-16"
+								class="absolute top-1 left-1 h-12 w-12 rounded-md border-2 border-white bg-gray-200 shadow md:h-16 md:w-16"
 							></div>
 							{#if count > 2}
 								<div
-									class="absolute left-0.5 top-0.5 h-12 w-12 rounded-md border-2 border-white bg-gray-300 shadow md:h-16 md:w-16"
+									class="absolute top-0.5 left-0.5 h-12 w-12 rounded-md border-2 border-white bg-gray-300 shadow md:h-16 md:w-16"
 								></div>
 							{/if}
 						{/if}
@@ -220,7 +217,7 @@
 							<!-- Count badge -->
 							{#if count > 1}
 								<div
-									class="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-xs font-semibold text-white shadow-md md:h-6 md:w-6 md:text-sm"
+									class="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-xs font-semibold text-white shadow-md md:h-6 md:w-6 md:text-sm"
 								>
 									{count}
 								</div>
@@ -246,19 +243,26 @@
 		<!-- Loading spinner -->
 		{#if !isMediaLoaded}
 			<div class="absolute inset-0 flex items-center justify-center">
-				<div class="h-10 w-10 animate-spin rounded-full border-4 border-white/30 border-t-white"></div>
+				<div
+					class="h-10 w-10 animate-spin rounded-full border-4 border-white/30 border-t-white"
+				></div>
 			</div>
 		{/if}
 
 		<div class="relative max-h-[90vh] max-w-[90vw]" class:opacity-0={!isMediaLoaded}>
 			<!-- Close button -->
 			<button
-				class="absolute -right-2 -top-2 z-10 rounded-full bg-white p-1.5 shadow-lg transition-colors hover:bg-gray-100"
+				class="absolute -top-2 -right-2 z-10 rounded-full bg-white p-1.5 shadow-lg transition-colors hover:bg-gray-100"
 				onclick={closeModal}
 				aria-label="Close modal"
 			>
 				<svg class="h-5 w-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M6 18L18 6M6 6l12 12"
+					/>
 				</svg>
 			</button>
 
@@ -266,7 +270,7 @@
 			{#if selectedGroup && selectedGroup.assets.length > 1}
 				<!-- Previous button -->
 				<button
-					class="absolute left-0 top-1/2 z-10 -translate-x-12 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-lg transition-all hover:bg-white disabled:opacity-30 disabled:cursor-not-allowed"
+					class="absolute top-1/2 left-0 z-10 -translate-x-12 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-lg transition-all hover:bg-white disabled:cursor-not-allowed disabled:opacity-30"
 					onclick={goToPrevious}
 					disabled={currentIndex === 0}
 					aria-label="Previous image"
@@ -276,7 +280,7 @@
 
 				<!-- Next button -->
 				<button
-					class="absolute right-0 top-1/2 z-10 translate-x-12 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-lg transition-all hover:bg-white disabled:opacity-30 disabled:cursor-not-allowed"
+					class="absolute top-1/2 right-0 z-10 translate-x-12 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-lg transition-all hover:bg-white disabled:cursor-not-allowed disabled:opacity-30"
 					onclick={goToNext}
 					disabled={currentIndex === selectedGroup.assets.length - 1}
 					aria-label="Next image"
@@ -285,7 +289,9 @@
 				</button>
 
 				<!-- Counter -->
-				<div class="absolute -bottom-8 left-1/2 -translate-x-1/2 rounded-full bg-black/60 px-3 py-1 text-sm text-white">
+				<div
+					class="absolute -bottom-8 left-1/2 -translate-x-1/2 rounded-full bg-black/60 px-3 py-1 text-sm text-white"
+				>
 					{currentIndex + 1} / {selectedGroup.assets.length}
 				</div>
 			{/if}

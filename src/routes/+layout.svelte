@@ -43,7 +43,7 @@
 
 <ModeWatcher />
 
-<header class="fixed bg-transparent top-0 left-1/2 z-50 w-full -translate-x-1/2">
+<header class="fixed top-0 left-1/2 z-50 w-full -translate-x-1/2 bg-transparent">
 	<nav
 		class="container mx-auto mt-4 h-16 rounded-lg bg-background shadow-lg backdrop-blur-sm"
 		aria-label="Main navigation"
@@ -51,13 +51,18 @@
 		<div class="flex h-full items-center justify-between pr-3 pl-2">
 			<div>
 				<a
-					href={resolve("/")}
+					href={resolve('/')}
 					class="header flex h-16 items-center px-4 text-2xl font-bold"
 					aria-label="30/30 Travel Gallery - Home">30/30</a
 				>
 			</div>
 			<div class="flex items-center gap-2">
-				<Button variant="ghost" size="icon" aria-label="About this gallery" onclick={openAboutModal}>
+				<Button
+					variant="ghost"
+					size="icon"
+					aria-label="About this gallery"
+					onclick={openAboutModal}
+				>
 					<Info class="h-[1.2rem] w-[1.2rem]" aria-hidden="true" />
 					<span class="sr-only">About</span>
 				</Button>
@@ -96,24 +101,30 @@
 		aria-modal="true"
 		tabindex="-1"
 	>
-		<div class="relative max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-lg bg-background p-6 shadow-lg">
+		<div
+			class="relative max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-lg bg-background p-6 shadow-lg"
+		>
 			<!-- Close button -->
 			<button
-				class="absolute right-4 top-4 z-10 rounded-full bg-muted p-1.5 shadow-lg transition-colors hover:bg-muted/80"
+				class="absolute top-4 right-4 z-10 rounded-full bg-muted p-1.5 shadow-lg transition-colors hover:bg-muted/80"
 				onclick={closeAboutModal}
 				aria-label="Close modal"
 			>
 				<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M6 18L18 6M6 6l12 12"
+					/>
 				</svg>
 			</button>
 
 			<h2 class="header mb-4 text-2xl font-bold">hey i'm aritra!</h2>
 			<p class="mb-6 text-sm text-muted-foreground">
-				A software engineer by profession. I have a goal of visiting 30 countries before I
-				turn 30. This is my collection of over saturated photos and videos I've taken over the
-				years with my phone. Feel free to browse through and enjoy the memories captured in
-				these moments.
+				A software engineer by profession. I have a goal of visiting 30 countries before I turn 30.
+				This is my collection of over saturated photos and videos I've taken over the years with my
+				phone. Feel free to browse through and enjoy the memories captured in these moments.
 			</p>
 
 			<p class="header mb-4 text-xl font-bold">{countryCount} / 30 countries</p>
