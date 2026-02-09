@@ -2,18 +2,36 @@
 	import '../app.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import { ModeWatcher } from 'mode-watcher';
-	import { SunIcon, MoonIcon, Search } from '@lucide/svelte';
+	import { SunIcon, MoonIcon, Info } from '@lucide/svelte';
 	import { toggleMode } from 'mode-watcher';
 	import { Button } from '$lib/components/ui/button/index.js';
+	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import posthog from 'posthog-js';
 	import { browser } from '$app/environment';
 	import { beforeNavigate, afterNavigate } from '$app/navigation';
+	import type { LayoutData } from './$types';
 
-	let { children } = $props();
+	interface Props {
+		children: any;
+		data: LayoutData;
+	}
+
+	let { children, data }: Props = $props();
 
 	if (browser) {
 		beforeNavigate(() => posthog.capture('$pageleave'));
 		afterNavigate(() => posthog.capture('$pageview'));
+	}
+
+	let showAboutModal = $state(false);
+	const countryCount = $derived(data?.summery ? Object.keys(data.summery).length : 0);
+
+	function openAboutModal() {
+		showAboutModal = true;
+	}
+
+	function closeAboutModal() {
+		showAboutModal = false;
 	}
 </script>
 
@@ -23,12 +41,12 @@
 
 <ModeWatcher />
 
-<header>
+<header class="fixed bg-transparent top-0 left-1/2 z-50 w-full -translate-x-1/2">
 	<nav
-		class="fixed z-50 h-16 w-screen border-b border-foreground bg-background"
+		class="container mx-auto mt-4 h-16 rounded-lg bg-background shadow-lg backdrop-blur-sm"
 		aria-label="Main navigation"
 	>
-		<div class="container mx-auto flex items-center justify-between pr-3 pl-2">
+		<div class="flex h-full items-center justify-between pr-3 pl-2">
 			<div>
 				<a
 					href="/"
@@ -37,8 +55,9 @@
 				>
 			</div>
 			<div class="flex items-center gap-2">
-				<Button variant="ghost" size="icon" aria-label="Search">
-					<Search />
+				<Button variant="ghost" size="icon" aria-label="About this gallery" onclick={openAboutModal}>
+					<Info class="h-[1.2rem] w-[1.2rem]" aria-hidden="true" />
+					<span class="sr-only">About</span>
 				</Button>
 				<Button
 					onclick={toggleMode}
@@ -61,6 +80,51 @@
 	</nav>
 </header>
 
-<main class="container mx-auto p-2 pt-16">
+<main>
 	{@render children?.()}
 </main>
+
+<!-- About modal -->
+{#if showAboutModal}
+	<div
+		class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
+		onclick={(e) => e.target === e.currentTarget && closeAboutModal()}
+		onkeydown={(e) => e.key === 'Escape' && closeAboutModal()}
+		role="dialog"
+		aria-modal="true"
+		tabindex="-1"
+	>
+		<div class="relative max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-lg bg-background p-6 shadow-lg">
+			<!-- Close button -->
+			<button
+				class="absolute right-4 top-4 z-10 rounded-full bg-muted p-1.5 shadow-lg transition-colors hover:bg-muted/80"
+				onclick={closeAboutModal}
+				aria-label="Close modal"
+			>
+				<svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+				</svg>
+			</button>
+
+			<h2 class="header mb-4 text-2xl font-bold">hey i'm aritra!</h2>
+			<p class="mb-6 text-sm text-muted-foreground">
+				A software engineer by profession. I have a goal of visiting 30 countries before I
+				turn 30. This is my collection of over saturated photos and videos I've taken over the
+				years with my phone. Feel free to browse through and enjoy the memories captured in
+				these moments.
+			</p>
+
+			<p class="header mb-4 text-xl font-bold">{countryCount} / 30 countries</p>
+
+			{#if data.summery}
+				<div class="flex flex-wrap gap-2">
+					{#each Object.keys(data.summery) as country (country)}
+						<span class="rounded-md bg-muted px-3 py-1.5 text-sm font-medium">
+							{country}
+						</span>
+					{/each}
+				</div>
+			{/if}
+		</div>
+	</div>
+{/if}

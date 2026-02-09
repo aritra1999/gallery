@@ -35,8 +35,8 @@
 				if (body.length === 0) noMoreAssets = true;
 				assets.push(...(body as Asset[]));
 			})
-			.catch((err) => {
-				console.log(err);
+			.catch(() => {
+				// Error loading assets
 			});
 
 		loading = false;
@@ -54,6 +54,7 @@
 	<meta name="description" content="Explore the media gallery" />
 </svelte:head>
 
+<div class="container mx-auto p-2 pt-24">
 <div class="my-16">
 	<h1 class="header mb-8 text-4xl font-bold sm:text-5xl">
 		{data.tag}
@@ -157,3 +158,4 @@
 </Dialog.Root>
 
 <Background label={data.tag.split(',')[0]} />
+</div>
