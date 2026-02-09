@@ -35,8 +35,8 @@
 				if (body.length === 0) noMoreAssets = true;
 				assets.push(...(body as Asset[]));
 			})
-			.catch((err) => {
-				console.log(err);
+			.catch(() => {
+				// Error loading assets
 			});
 
 		loading = false;
@@ -54,10 +54,10 @@
 	<meta name="description" content="Explore the media gallery" />
 </svelte:head>
 
-<div class="container mx-auto pt-10">
+<div class="container mx-auto p-2 pt-24">
 	<div class="my-16">
-	<h1 class="header mb-8 text-4xl font-bold sm:text-5xl">
-		{data.tag}
+		<h1 class="header mb-8 text-4xl font-bold sm:text-5xl">
+			{data.tag}
 		</h1>
 	</div>
 	{#if showLoadingModal}
@@ -132,30 +132,30 @@
 			<p class="mt-20 text-center">No assets found.</p>
 		{/if}
 	</div>
-</div>
 
-<Dialog.Root bind:open>
-	<Dialog.Content fullscreen={true}>
-		{#if selectedAsset}
-			{#if selectedAsset.mimeType.startsWith('video/')}
-				<video
-					controls={true}
-					autoplay={true}
-					class="max-h-[calc(100vh-2rem)] max-w-[calc(100vw-2rem)] rounded-lg object-contain md:max-h-[calc(100vh-4rem)] md:max-w-[calc(100vw-4rem)]"
-				>
-					<source src={selectedAsset.url} type={selectedAsset.mimeType} />
-					<track kind="captions" src="" label="No captions available" />
-					Your browser does not support the video tag.
-				</video>
-			{:else}
-				<img
-					src={selectedAsset.url}
-					alt={selectedAsset.url}
-					class="max-h-[calc(100vh-2rem)] max-w-[calc(100vw-2rem)] rounded-lg object-contain md:max-h-[calc(100vh-4rem)] md:max-w-[calc(100vw-4rem)]"
-				/>
+	<Dialog.Root bind:open>
+		<Dialog.Content fullscreen={true}>
+			{#if selectedAsset}
+				{#if selectedAsset.mimeType.startsWith('video/')}
+					<video
+						controls={true}
+						autoplay={true}
+						class="max-h-[calc(100vh-2rem)] max-w-[calc(100vw-2rem)] rounded-lg object-contain md:max-h-[calc(100vh-4rem)] md:max-w-[calc(100vw-4rem)]"
+					>
+						<source src={selectedAsset.url} type={selectedAsset.mimeType} />
+						<track kind="captions" src="" label="No captions available" />
+						Your browser does not support the video tag.
+					</video>
+				{:else}
+					<img
+						src={selectedAsset.url}
+						alt={selectedAsset.url}
+						class="max-h-[calc(100vh-2rem)] max-w-[calc(100vw-2rem)] rounded-lg object-contain md:max-h-[calc(100vh-4rem)] md:max-w-[calc(100vw-4rem)]"
+					/>
+				{/if}
 			{/if}
-		{/if}
-	</Dialog.Content>
-</Dialog.Root>
+		</Dialog.Content>
+	</Dialog.Root>
 
-<Background label={data.tag.split(',')[0]} />
+	<Background label={data.tag.split(',')[0]} />
+</div>

@@ -1,6 +1,16 @@
 import type { PageServerLoad } from './$types';
+import { error } from '@sveltejs/kit';
+import { fetchAllAssets } from '@/sanity/client';
 
-// Summary data is now loaded in +layout.server.ts and available via parent data
 export const load: PageServerLoad = async () => {
-	return {};
+	try {
+		const assets = await fetchAllAssets();
+
+		return {
+			assets
+		};
+	} catch (err) {
+		console.error('Error loading media assets:', err);
+		throw error(500, 'Failed to load media from Sanity');
+	}
 };

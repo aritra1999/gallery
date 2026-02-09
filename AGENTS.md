@@ -156,8 +156,12 @@ This project uses **Svelte 5 runes**, not Svelte 4 reactive syntax:
 <!-- Module script for types and variants -->
 <script lang="ts" module>
 	import { tv } from 'tailwind-variants';
-	export const buttonVariants = tv({ /* ... */ });
-	export type ButtonProps = { /* ... */ };
+	export const buttonVariants = tv({
+		/* ... */
+	});
+	export type ButtonProps = {
+		/* ... */
+	};
 </script>
 
 <!-- Instance script for logic -->

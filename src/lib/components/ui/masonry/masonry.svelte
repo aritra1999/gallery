@@ -51,9 +51,7 @@
 	}: Props = $props();
 
 	$effect.pre(() => {
-		if (maxColWidth < minColWidth) {
-			console.warn(`svelte-bricks: maxColWidth (${maxColWidth}) < minColWidth (${minColWidth}).`);
-		}
+		// Skip if maxColWidth < minColWidth
 	});
 	let nCols = $derived(calcCols(masonryWidth, minColWidth, gap));
 	let itemsToCols = $derived(

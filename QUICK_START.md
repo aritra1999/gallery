@@ -3,21 +3,23 @@
 ## 1. Environment Setup
 
 1. **Copy environment file:**
+
    ```bash
    cp .env.example .env
    ```
 
 2. **Update your `.env` file with these values:**
+
    ```env
    # Sanity Configuration (already set for your project)
    PUBLIC_SANITY_PROJECT_ID=b74xb8a5
    PUBLIC_SANITY_DATASET=production
    PUBLIC_SANITY_API_VERSION=2024-01-01
    SANITY_TOKEN=your_sanity_write_token_here
-   
+
    # Generate a secure JWT secret (run the command below)
    JWT_SECRET=your_jwt_secret_here
-   
+
    # Admin credentials (default password is "test")
    ADMIN_USERNAME=aritra1999
    ADMIN_PASSWORD_HASH=$2b$10$twDrflZ/3RYhgKjuzYJUDOYYEShxyVK4ifA4HQUCB2ABH1KJcjOKy
@@ -34,9 +36,11 @@
 ## 3. Generate JWT Secret
 
 Run this command to generate a secure JWT secret:
+
 ```bash
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
+
 Copy the output and replace `JWT_SECRET` in your `.env` file.
 
 ## 4. Start the Server
@@ -63,6 +67,7 @@ bun run dev
 ## 🔧 Change Password (Recommended)
 
 1. Generate a new password hash:
+
    ```bash
    bun run generate-hash "your_new_secure_password"
    ```

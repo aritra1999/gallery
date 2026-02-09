@@ -1,40 +1,40 @@
 <script lang="ts">
-	import { onMount, onDestroy, setContext, untrack } from "svelte";
-	import MapLibreGL from "maplibre-gl";
-	import "maplibre-gl/dist/maplibre-gl.css";
-	import { browser } from "$app/environment";
+	import { onMount, onDestroy, setContext, untrack } from 'svelte';
+	import MapLibreGL from 'maplibre-gl';
+	import 'maplibre-gl/dist/maplibre-gl.css';
+	import { browser } from '$app/environment';
 
-	let tailwindTheme: "light" | "dark" = $state("light");
+	let tailwindTheme: 'light' | 'dark' = $state('light');
 
 	type MapStyleOption = string | MapLibreGL.StyleSpecification;
 
 	interface Props {
-		children?: import("svelte").Snippet;
+		children?: import('svelte').Snippet;
 		styles?: {
 			light?: MapStyleOption;
 			dark?: MapStyleOption;
 		};
-		theme?: "light" | "dark";
+		theme?: 'light' | 'dark';
 		/** Map projection type. Use `{ type: "globe" }` for 3D globe view. */
 		projection?: MapLibreGL.ProjectionSpecification;
 		center?: [number, number];
 		zoom?: number;
-		options?: Omit<MapLibreGL.MapOptions, "container" | "style">;
+		options?: Omit<MapLibreGL.MapOptions, 'container' | 'style'>;
 	}
 
 	const defaultStyles = {
-		dark: "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
-		light: "https://basemaps.cartocdn.com/gl/positron-gl-style/style.json",
+		dark: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+		light: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json'
 	};
 
 	let {
 		children,
 		styles,
-		theme: _theme = "light",
+		theme: _theme = 'light',
 		projection,
 		center = [13.405, 52.52],
 		zoom = 0,
-		options = {},
+		options = {}
 	}: Props = $props();
 
 	let mapContainer: HTMLDivElement;
@@ -47,16 +47,16 @@
 
 	const mapStyles = $derived({
 		dark: styles?.dark ?? defaultStyles.dark,
-		light: styles?.light ?? defaultStyles.light,
+		light: styles?.light ?? defaultStyles.light
 	});
 
-	const currentStyle = $derived(tailwindTheme === "light" ? mapStyles.light : mapStyles.dark);
+	const currentStyle = $derived(tailwindTheme === 'light' ? mapStyles.light : mapStyles.dark);
 
 	const isReady = $derived(isMounted && isLoaded && isStyleLoaded);
 
-	setContext("map", {
+	setContext('map', {
 		getMap: () => map,
-		isLoaded: () => isReady,
+		isLoaded: () => isReady
 	});
 
 	function clearStyleTimeout() {
@@ -73,7 +73,7 @@
 			const root = document.documentElement;
 
 			const updateTheme = () => {
-				tailwindTheme = root.classList.contains("dark") ? "dark" : "light";
+				tailwindTheme = root.classList.contains('dark') ? 'dark' : 'light';
 			};
 
 			updateTheme();
@@ -81,7 +81,7 @@
 			const observer = new MutationObserver(updateTheme);
 			observer.observe(root, {
 				attributes: true,
-				attributeFilter: ["class"],
+				attributeFilter: ['class']
 			});
 
 			onDestroy(() => observer.disconnect());
@@ -92,11 +92,11 @@
 			style: currentStyle,
 			renderWorldCopies: false,
 			attributionControl: {
-				compact: true,
+				compact: true
 			},
 			center,
 			zoom,
-			...options,
+			...options
 		});
 
 		const styleDataHandler = () => {
@@ -119,8 +119,8 @@
 			isLoaded = true;
 		};
 
-		mapInstance.on("load", loadHandler);
-		mapInstance.on("styledata", styleDataHandler);
+		mapInstance.on('load', loadHandler);
+		mapInstance.on('styledata', styleDataHandler);
 
 		map = mapInstance;
 	});
@@ -162,12 +162,12 @@
 	{#if !isReady}
 		<div class="absolute inset-0 flex items-center justify-center">
 			<div class="flex gap-1">
-				<span class="bg-muted-foreground/60 size-1.5 animate-pulse rounded-full"></span>
+				<span class="size-1.5 animate-pulse rounded-full bg-muted-foreground/60"></span>
 				<span
-					class="bg-muted-foreground/60 size-1.5 animate-pulse rounded-full [animation-delay:150ms]"
+					class="size-1.5 animate-pulse rounded-full bg-muted-foreground/60 [animation-delay:150ms]"
 				></span>
 				<span
-					class="bg-muted-foreground/60 size-1.5 animate-pulse rounded-full [animation-delay:300ms]"
+					class="size-1.5 animate-pulse rounded-full bg-muted-foreground/60 [animation-delay:300ms]"
 				></span>
 			</div>
 		</div>
